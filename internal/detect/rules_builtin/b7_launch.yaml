@@ -1,0 +1,41 @@
+rules:
+  - id: B7.launch.shell-command
+    class: B7
+    severity: high
+    confidence: firm
+    title: "Server is launched through a shell interpreter"
+    cwe: "CWE-78"
+    references: ["supply-chain", "command-injection"]
+    remediation: "Launching an MCP server via sh/bash/cmd/powershell lets any argument be interpreted by a shell. Invoke the server binary directly with argv instead."
+    match:
+      field: server.command
+      any_regex:
+        - "(?i)(^|/)(sh|bash|zsh|dash|cmd|cmd\\.exe|powershell|powershell\\.exe|pwsh)$"
+
+  - id: B7.launch.piped-fetch
+    class: B7
+    severity: high
+    confidence: firm
+    title: "Server launch pipes a remote download into a shell"
+    cwe: "CWE-494"
+    references: ["supply-chain"]
+    remediation: "Fetching and executing remote code at launch (curl ... | sh) runs unverified code. Pin and vendor the server instead."
+    match:
+      field: server.arg
+      any_regex:
+        - "(?i)(curl|wget)\\b.*\\|\\s*(sh|bash)"
+        - "(?i)\\|\\s*(sh|bash)\\b"
+
+  - id: B7.launch.shell-flag
+    class: B7
+    severity: medium
+    confidence: tentative
+    title: "Server launch argument passes an inline shell command"
+    cwe: "CWE-78"
+    references: ["supply-chain", "command-injection"]
+    remediation: "An inline command flag (-c / -e) can smuggle arbitrary commands through an allowed launcher. Review the full argument list."
+    match:
+      field: server.arg
+      any_regex:
+        - "^-c$"
+        - "^-e$"

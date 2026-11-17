@@ -1,0 +1,5 @@
+# scope.yaml
+allow_active: true
+targets:
+  - "https://mcp.notion.com/mcp"   # or stdio:/path/to/your-server, or http://localhost:PORT/mcp
+max_calls_per_tool: 10000000000

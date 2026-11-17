@@ -1,0 +1,19 @@
+# Example Seyon active-probing scope file.
+#
+# Active probing is refused unless allow_active is true AND the exact target is
+# listed below. Without this file (or with allow_active unset), `seyon scan
+# --mode black` only connects and enumerates — it invokes no tools.
+
+allow_active: true
+
+# The scanner only probes a target whose spec matches one of these exactly.
+targets:
+  - "stdio:/opt/mcp/my-server"
+  - "https://mcp.internal.example.com/rpc"
+
+# Deny the spawned target any outbound network (default: true). Set to false
+# only when you accept that a spawned server may reach the network.
+deny_egress: true
+
+# Bound invocations per tool so probing never becomes a load test (0 = default).
+max_calls_per_tool: 4

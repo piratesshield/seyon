@@ -1,0 +1,46 @@
+# Seyon — build and runtime requirements
+# -------------------------------------------------------------------
+# Seyon is a Go project. The authoritative dependency manifest is
+# go.mod; this file is a human-readable summary for people arriving
+# from a Python background. Nothing here is consumed by `pip`.
+# -------------------------------------------------------------------
+
+# -------- Required on the build host --------
+go           >= 1.26.0        # https://go.dev/dl/
+git          >= 2.0           # used by the CLI to clone GitHub targets
+make         any              # pre-installed on macOS and most Linux
+
+# -------- Required at runtime --------
+# (nothing)  Seyon produces static Go binaries with no runtime deps.
+
+# -------- Go module dependencies (from go.mod) --------
+# Direct
+github.com/dop251/goja           latest   # JS AST taint analyzer
+github.com/go-python/gpython     v0.2.0   # Python AST taint analyzer
+gopkg.in/yaml.v3                 v3.0.1   # YAML rule-pack loader
+
+# Indirect
+golang.org/x/net                 v0.62.0  # HTTP/2 rapid-reset probe
+
+# Install Go modules with:
+#   go mod download
+
+# -------- Optional, for development --------
+golangci-lint     v1.64.8        # Pinned; required by `make check`
+# Install:
+#   curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+#     | sh -s -- -b "$(go env GOPATH)/bin" v1.64.8
+
+# -------- Optional, for the DVMCP integration test --------
+python3           >= 3.10        # https://www.python.org/downloads/
+# Vulnerable target:
+#   git clone https://github.com/harishsg993010/damn-vulnerable-MCP-server.git
+
+# -------- Optional, for the L-class LLM analyzer --------
+# Any OpenAI-compatible chat/completions endpoint:
+#   OpenAI, Azure OpenAI, OpenRouter, Ollama, vLLM, LocalAI, ...
+# Configured via these environment variables:
+#   SEYON_LLM_API_KEY     (required to enable the stage)
+#   SEYON_LLM_ENDPOINT    default: https://api.openai.com/v1/chat/completions
+#   SEYON_LLM_MODEL       default: gpt-4o-mini
+#   SEYON_LLM_TIMEOUT     default: 30 (seconds per call)

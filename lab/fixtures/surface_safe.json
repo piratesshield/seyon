@@ -1,0 +1,23 @@
+{
+  "server": "safe-lab",
+  "tools": [
+    {
+      "name": "echo",
+      "description": "Echo the text back to the caller.",
+      "inputSchema": {"type": "object", "properties": {"text": {"type": "string", "maxLength": 100}}}
+    },
+    {
+      "name": "add",
+      "description": "Add two integers and return the sum.",
+      "inputSchema": {"type": "object", "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}}}
+    },
+    {
+      "name": "lookup",
+      "description": "Look up a record by its identifier.",
+      "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "maxLength": 64, "pattern": "^[a-z0-9-]+$"}}}
+    }
+  ],
+  "prompts": [
+    {"name": "summarize", "description": "Summarize the given document in a few sentences."}
+  ]
+}

@@ -1,0 +1,16 @@
+# Example external rule pack. Loaded with `seyon scan --rules <this-dir>`; its
+# rules extend the built-in detectors. This one flags tools whose name hints at
+# a debug/backdoor hook — a house rule a team might add.
+rules:
+  - id: CUSTOM.debug-hook
+    class: B6
+    severity: medium
+    confidence: tentative
+    title: "Tool name suggests a debug or backdoor hook"
+    references: ["custom-pack"]
+    remediation: "Confirm this tool is intended to be exposed to the agent; debug/backdoor hooks should not ship in production surfaces."
+    match:
+      field: tool.name
+      any_substring:
+        - "debug"
+        - "backdoor"

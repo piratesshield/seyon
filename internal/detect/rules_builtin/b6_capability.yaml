@@ -1,0 +1,25 @@
+rules:
+  - id: B6.capability.command-exec
+    class: B6
+    severity: low
+    confidence: tentative
+    title: "Tool name declares a command-execution capability"
+    references: ["least-privilege"]
+    remediation: "Confirm this tool is meant to execute commands, that its input is strictly constrained, and that it is not exposed to untrusted callers."
+    match:
+      field: tool.name
+      any_regex:
+        - "(?i)(^|_)(exec|shell|run_command|runshell|system)($|_)"
+        - "(?i)eval"
+
+  - id: B6.capability.destructive
+    class: B6
+    severity: low
+    confidence: tentative
+    title: "Tool name declares a destructive or write capability"
+    references: ["least-privilege"]
+    remediation: "Confirm the tool needs write/delete access and that its scope is constrained."
+    match:
+      field: tool.name
+      any_regex:
+        - "(?i)(^|_)(delete|remove|rm|drop|truncate|write_file|writefile|overwrite)($|_)"

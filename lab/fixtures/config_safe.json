@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ok": {
+      "command": "mcp-server-ok",
+      "args": ["--stdio", "--port", "8080"]
+    },
+    "ok2": {
+      "command": "/usr/bin/mcp-foo",
+      "args": ["serve"]
+    }
+  }
+}

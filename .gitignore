@@ -1,0 +1,46 @@
+# Build artifacts
+/bin/
+/seyon
+*.exe
+*.test
+*.out
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Scan output / scratch
+/bb/
+/scan_results/
+/tmp/
+/scratch/
+/results/
+/report.html
+/report1.html
+/ecosystem_report.html
+/mcp_github_links.txt
+*.local.json
+*.local.yaml
+
+# Vulnerable targets cloned locally for integration testing
+/dvmcp/
+/mcp-scanner/
+
+# Competitive-analysis clones of other scanners
+/codes/
+
+# Local claude session scratch
+/.claude/
+
+# Go
+vendor/

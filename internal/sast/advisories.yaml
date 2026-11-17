@@ -1,0 +1,22 @@
+# A small, embedded advisory set. This is a stand-in for a live OSV client
+# (planned): exact (ecosystem, name, version) matches only. Extend or replace
+# with an OSV query in a later iteration.
+advisories:
+  - ecosystem: npm
+    name: lodash
+    version: 4.17.20
+    id: CVE-2021-23337
+    severity: high
+    summary: "Command injection via template in lodash < 4.17.21"
+  - ecosystem: pypi
+    name: pyyaml
+    version: 5.3.1
+    id: CVE-2020-14343
+    severity: critical
+    summary: "Arbitrary code execution via full_load in PyYAML < 5.4"
+  - ecosystem: go
+    name: github.com/example/vuln
+    version: 1.2.3
+    id: GHSA-xxxx-test
+    severity: high
+    summary: "Test advisory fixture for Seyon's dependency scanner"

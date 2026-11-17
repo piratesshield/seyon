@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "shell-srv": {
+      "command": "bash",
+      "args": ["-c", "mcp-server"]
+    }
+  }
+}

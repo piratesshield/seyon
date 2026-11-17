@@ -1,0 +1,89 @@
+# Source-pattern rules for languages Seyon analyzes by pattern rather than full
+# dataflow (Python, JavaScript, TypeScript). These are line-regex matches, so
+# every finding they produce is reported at tentative confidence: a signal to
+# review, not a proven dataflow. Go is analyzed by go/ast instead.
+patterns:
+  # ---- Python ----
+  - id: C1.py.os-system
+    class: C1
+    severity: high
+    confidence: tentative
+    title: "Python os.system call (command execution)"
+    cwe: CWE-78
+    langs: [python]
+    regex: 'os\.system\('
+    remediation: "Avoid os.system; use subprocess with a fixed argv and no shell, and validate inputs."
+  - id: C1.py.subprocess-shell
+    class: C1
+    severity: high
+    confidence: tentative
+    title: "Python subprocess with shell=True"
+    cwe: CWE-78
+    langs: [python]
+    regex: 'subprocess\.(call|run|Popen|check_output|check_call)\([^)]*shell\s*=\s*True'
+    remediation: "Drop shell=True and pass an argument list; never build a shell string from input."
+  - id: C1.py.eval-var
+    class: C1
+    severity: high
+    confidence: tentative
+    title: "Python eval/exec of a non-literal"
+    cwe: CWE-95
+    langs: [python]
+    regex: '\b(eval|exec)\(\s*[A-Za-z_]'
+    remediation: "Do not eval/exec dynamic input; parse or dispatch explicitly."
+  - id: C2.py.open-concat
+    class: C2
+    severity: medium
+    confidence: tentative
+    title: "Python file open with a concatenated path"
+    cwe: CWE-22
+    langs: [python]
+    regex: 'open\([^)]*\+'
+    remediation: "Canonicalize and constrain the path to a base directory before opening."
+  - id: C3.py.fetch-var
+    class: C3
+    severity: high
+    confidence: tentative
+    title: "Python HTTP fetch of a non-literal URL (SSRF)"
+    cwe: CWE-918
+    langs: [python]
+    regex: '(requests\.(get|post|put|delete)|urllib\.request\.urlopen|httpx\.(get|post))\(\s*[A-Za-z_]'
+    remediation: "Validate the URL against an allowlist and block internal/metadata addresses."
+
+  # ---- JavaScript / TypeScript ----
+  - id: C1.js.child-exec
+    class: C1
+    severity: high
+    confidence: tentative
+    title: "JavaScript child_process exec (command execution)"
+    cwe: CWE-78
+    langs: [javascript]
+    regex: '(child_process|cp|childProcess|proc)\.\s*exec(Sync)?\(\s*[A-Za-z_`]'
+    remediation: "Use execFile/spawn with a fixed argv; never pass a built command string to exec."
+  - id: C1.js.eval-var
+    class: C1
+    severity: high
+    confidence: tentative
+    title: "JavaScript eval of a non-literal"
+    cwe: CWE-95
+    langs: [javascript]
+    regex: '\beval\(\s*[A-Za-z_]'
+    remediation: "Do not eval dynamic input; parse or dispatch explicitly."
+  - id: C2.js.readfile-concat
+    class: C2
+    severity: medium
+    confidence: tentative
+    title: "JavaScript file read with a concatenated path"
+    cwe: CWE-22
+    langs: [javascript]
+    regex: 'fs\.(readFile|readFileSync|createReadStream|open)\([^)]*\+'
+    remediation: "Canonicalize and constrain the path to a base directory before reading."
+  - id: C3.js.fetch-var
+    class: C3
+    severity: high
+    confidence: tentative
+    title: "JavaScript HTTP fetch of a non-literal URL (SSRF)"
+    cwe: CWE-918
+    langs: [javascript]
+    regex: '(\bfetch\(|axios\.(get|post)\(|https?\.get\()\s*[A-Za-z_`]'
+    remediation: "Validate the URL against an allowlist and block internal/metadata addresses."

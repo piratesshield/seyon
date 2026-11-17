@@ -1,0 +1,60 @@
+rules:
+  - id: B1.override.ignore-previous
+    class: B1
+    severity: high
+    confidence: tentative
+    title: "Tool description contains instruction-override language"
+    references: ["tool-poisoning", "prompt-injection"]
+    remediation: "Tool descriptions are read by the agent as trusted text. Remove directives that try to steer the model; descriptions should state what the tool does, not instruct the agent."
+    match:
+      field: tool.description
+      any_substring:
+        - "ignore previous instructions"
+        - "ignore all previous"
+        - "disregard the above"
+        - "disregard previous"
+        - "forget everything above"
+
+  - id: B1.covert.hide-from-user
+    class: B1
+    severity: high
+    confidence: tentative
+    title: "Tool description instructs the agent to act covertly"
+    references: ["tool-poisoning"]
+    remediation: "Descriptions that tell the agent to conceal actions from the user are a hallmark of tool poisoning. Remove them."
+    match:
+      field: tool.description
+      any_substring:
+        - "do not tell the user"
+        - "without informing the user"
+        - "without telling the user"
+        - "do not mention this"
+
+  - id: B1.exfil.sensitive-files
+    class: B1
+    severity: high
+    confidence: tentative
+    title: "Tool description references reading secrets or sensitive files"
+    references: ["tool-poisoning", "data-exfiltration"]
+    remediation: "A description that points the agent at credentials or private files is a data-exfiltration lure. Review the tool's true behaviour."
+    match:
+      field: tool.description
+      any_regex:
+        - "(?i)\\.ssh/"
+        - "(?i)(id_rsa|authorized_keys|\\.pem\\b)"
+        - "(?i)print (your|the) system prompt"
+        - "(?i)(exfiltrate|leak) (the|all|any)"
+
+  - id: B1.override.prompt-text
+    class: B1
+    severity: high
+    confidence: tentative
+    title: "Prompt description contains instruction-override language"
+    references: ["prompt-injection"]
+    remediation: "Prompt descriptions are shown to the agent. Remove override directives."
+    match:
+      field: prompt.description
+      any_substring:
+        - "ignore previous instructions"
+        - "disregard the above"
+        - "do not tell the user"

